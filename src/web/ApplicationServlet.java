@@ -26,7 +26,7 @@ public class ApplicationServlet extends HttpServlet {
    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    boolean logged = true;
+    boolean logged = false;
     String name = "Campinhos";
     response.setContentType("text/html");
     PrintWriter writer = response.getWriter();

@@ -10,6 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import controller.Authenticator;
+
 import java.sql.*;
 
 @WebServlet("/login")
@@ -17,10 +20,13 @@ public class LoginServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   /**
+   * @throws SQLException 
+   * @throws ClassNotFoundException 
    * @see HttpServlet#HttpServlet()
    */
-  public LoginServlet() {
+  public LoginServlet() throws ClassNotFoundException, SQLException {
     super();
+    Authenticator auth = new Authenticator();
     // TODO Auto-generated constructor stub
   }
 
@@ -80,6 +86,8 @@ public class LoginServlet extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // TODO Auto-generated method stub
+	System.out.println(request.getParameter("password"));
+	System.out.println(request.getParameter("email"));
     doGet(request, response);
   }
 

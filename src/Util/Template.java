@@ -4,14 +4,14 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import web.ApplicationServlet;
+import javax.servlet.http.HttpServlet;
 
 public class Template {
 
   BufferedReader template;
   Map<String,String> variables = new HashMap<String, String>();
 
-  public Template(ApplicationServlet servlet, String path) throws FileNotFoundException {
+  public Template(HttpServlet servlet, String path) throws FileNotFoundException {
     String file = servlet.getServletContext().getRealPath(path);
     this.template = new BufferedReader(new FileReader(file));
   }
