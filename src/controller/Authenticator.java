@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,8 @@ import Util.AESencrp;
 import model.Account;
 
 public class Authenticator {
+
+  private Map<String, Account> accounts;
 
 	public Authenticator () throws SQLException, ClassNotFoundException {
 		Connection c = getCon();
@@ -24,6 +28,7 @@ public class Authenticator {
 	    stmt.execute(sqlCreate);
 	    stmt.close();
 	    c.close();
+	    this.accounts = new HashMap<String, Account>();
 	}
 	
 	private Connection getCon() throws ClassNotFoundException, SQLException {
