@@ -9,6 +9,7 @@ import java.sql.Statement;
 
 import javax.servlet.http.HttpSession;
 
+import Util.AESencrp;
 import model.Account;
 
 public class Authenticator {
@@ -44,14 +45,14 @@ public class Authenticator {
 	}
 	
 	public Account get_account(String name) {
-		return null;
+		accounts.get(name);
 	}
 	
 	public void delete_account(String name) {
 		
 	}
 	
-	public void create_account(String name, String pwd1, String pwd2) throws SQLException, ClassNotFoundException {
+	public void create_account(String name, String pwd1, String pwd2) throws Exception {
 		Connection c = getCon();
 		//Confirmar se a conta já existe
 		String getsql = "select count(*) from users where email='"+name+"'";
@@ -65,7 +66,7 @@ public class Authenticator {
 		else if (pwd1.equals(pwd2)){
 			getsql = "insert into users values ('"
 					+name+"','"
-					+pwd1+"')";
+					+AESencrp.encrypt(pwd1)+"')";
 			st = c.createStatement();
 			st.executeUpdate(getsql);
 		} else { System.out.println("Passwords são diferentes!"); }

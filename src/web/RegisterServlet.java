@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Util.AESencrp;
 import Util.Template;
 import controller.Authenticator;
 
@@ -46,9 +47,10 @@ public class RegisterServlet extends HttpServlet {
     String email = request.getParameter("email");
     String pw = request.getParameter("password");
     String pw2 = request.getParameter("password2");
+    
     try {
 		auth.create_account(email,pw,pw2);
-	} catch (ClassNotFoundException | SQLException e) {
+	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
