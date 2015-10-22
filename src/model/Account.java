@@ -1,6 +1,8 @@
 package model;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
 
   private String accountName;
   private String password;
@@ -12,6 +14,13 @@ public class Account {
     this.password = password;
     logged = false;
     locked = false;
+  }
+  
+  public Account(String accountName, String password, boolean locked, boolean logged) {
+	this.accountName = accountName;
+	this.password = password;
+	this.logged = logged;
+    this.locked = locked;
   }
 
   // é necessário? ou esta verificação é feita no authenticator?
@@ -35,11 +44,11 @@ public class Account {
     this.password = password;
   }
 
-  public boolean isLogged() { return logged;  }
+  public boolean logged() { return logged;  }
   public void    logIn()    { logged = true;  }
   public void    logOut()   { logged = false; }
 
-  public boolean isLocked() { return locked;  }
+  public boolean locked() { return locked;  }
   public void    lock()     { locked = true;  }
   public void    unlock()   { locked = false; }
 }

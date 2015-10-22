@@ -18,7 +18,7 @@ import java.sql.*;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
-
+  private Authenticator auth;
   /**
    * @throws SQLException 
    * @throws ClassNotFoundException 
@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
    */
   public LoginServlet() throws ClassNotFoundException, SQLException {
     super();
-    Authenticator auth = new Authenticator();
+    auth = new Authenticator();
     // TODO Auto-generated constructor stub
   }
 
@@ -88,6 +88,15 @@ public class LoginServlet extends HttpServlet {
     // TODO Auto-generated method stub
 	System.out.println(request.getParameter("password"));
 	System.out.println(request.getParameter("email"));
+    String email = request.getParameter("email");
+    String pw = request.getParameter("password");
+
+    try {
+		System.out.println("EPA "+auth.login(email,pw).getUsername());
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     doGet(request, response);
   }
 
