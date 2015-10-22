@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controller.Authenticator;
 
@@ -92,7 +93,11 @@ public class LoginServlet extends HttpServlet {
     String pw = request.getParameter("password");
 
     try {
-		System.out.println("EPA "+auth.login(email,pw).getUsername());
+		//System.out.println("EPA "+auth.login(email,pw).getUsername());
+      //auth.login(email, pw);
+      HttpSession session = request.getSession();
+      String cenas = auth.login(email, pw).getUsername();
+      session.setAttribute("user", cenas);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

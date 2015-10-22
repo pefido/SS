@@ -40,8 +40,11 @@ public class Authenticator {
 	
 	public Account login(String name, String pwd) throws Exception {
 		Account tmp = get_account(name);
+		System.out.println(tmp.getPassword().equals(AESencrp.encrypt(pwd)));
+		System.out.println("logged: " + tmp.logged());
+		System.out.println("locked: " + tmp.locked());
 		if (tmp != null && !tmp.logged() && !tmp.locked()) {
-			System.out.println(tmp.getPassword().equals(AESencrp.encrypt(pwd)));
+			
 			if (AESencrp.decrypt(tmp.getPassword()).equals(pwd)) {
 				tmp.logIn();
 				save_acc(tmp);
