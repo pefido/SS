@@ -33,7 +33,6 @@ public class LogoutServlet extends HttpServlet {
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.getWriter().append("Logout");
     HttpSession session = request.getSession(false);
     //String user = request.getAttribute("userID").toString();
     try {
@@ -47,6 +46,7 @@ public class LogoutServlet extends HttpServlet {
     }
     //session.removeAttribute("user");
     session.invalidate();
+    response.sendRedirect("/MyServlet/");
   }
 
 }
