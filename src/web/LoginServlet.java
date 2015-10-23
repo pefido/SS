@@ -86,22 +86,17 @@ public class LoginServlet extends HttpServlet {
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    // TODO Auto-generated method stub
-	System.out.println(request.getParameter("password"));
-	System.out.println(request.getParameter("email"));
     String email = request.getParameter("email");
     String pw = request.getParameter("password");
-
     try {
-		//System.out.println("EPA "+auth.login(email,pw).getUsername());
-      //auth.login(email, pw);
+      //System.out.println("EPA "+auth.login(email,pw).getUsername());
       HttpSession session = request.getSession();
       String cenas = auth.login(email, pw).getUsername();
       session.setAttribute("user", cenas);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     response.sendRedirect("/MyServlet/");
   }
 
