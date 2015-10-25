@@ -20,15 +20,14 @@ public class Authenticator {
 
 	public Authenticator () throws SQLException, ClassNotFoundException {
 		Connection c = getCon();
-	    String sqlCreate = 
-	      "CREATE  TABLE IF NOT EXISTS users "
+		PreparedStatement pstmt = c.prepareStatement(
+		  "CREATE  TABLE IF NOT EXISTS users "
 	    + "(EMAIL  TEXT PRIMARY KEY     NOT NULL,"
 	    + " PWD    TEXT NOT NULL,"
 	    + " LOCKED BOOLEAN NOT NULL,"
-	    + " LOGGED BOOLEAN NOT NULL )";
-	    Statement stmt = c.createStatement();
-	    stmt.execute(sqlCreate);
-	    stmt.close();
+		+ " LOGGED BOOLEAN NOT NULL )");
+		pstmt.executeUpdate();
+	    pstmt.close();
 	    c.close();
 	}
 	
@@ -61,9 +60,9 @@ public class Authenticator {
 		Connection c = getCon();
 		PreparedStatement pstmt = c.prepareStatement("INSERT OR REPLACE into users values (?, ?, ?, ?)");
 		pstmt.setString(1, a.getUsername());
-		pstmt.setObject(2, a.getPassword());
-		pstmt.setObject(3, a.locked());
-		pstmt.setObject(4, a.logged());
+		pstmt.setString(2, a.getPassword());
+		pstmt.setBoolean(3, a.locked());
+		pstmt.setBoolean(4, a.logged());
 		pstmt.executeUpdate();
 	    pstmt.close();
 	    c.close();
@@ -85,8 +84,9 @@ public class Authenticator {
 	
 	public Account get_account(String name) throws Exception {
 		Connection c = getCon();
-		Statement stmt = c.createStatement();
-		ResultSet tmp = stmt.executeQuery("select * from users where email='"+name+"'");
+		PreparedStatement pstmt = c.prepareStatement("SELECT * FROM users WHERE email=?");
+		pstmt.setString(1, name);
+		ResultSet tmp = pstmt.executeQuery();
 		Account acc = null;
 	    while(tmp.next()){
 	      String username = tmp.getString(1);
@@ -95,7 +95,7 @@ public class Authenticator {
 	      boolean logged = tmp.getBoolean(4);
 	      acc = new Account(username,pass,locked,logged);
 	    }
-	    stmt.close();
+	    pstmt.close();
 	    c.close();
 		return acc;
 	}
@@ -115,20 +115,12 @@ public class Authenticator {
 	}
 	
 	public void create_account(String name, String pwd1, String pwd2) throws Exception {
-		Connection c = getCon();
-		//Confirmar se a conta já existe
-		String getsql = "select count(*) from users where email='"+name+"'";
-		Statement st = c.createStatement();
-		ResultSet tmp = st.executeQuery(getsql);
-		tmp.next();
-		int count = tmp.getInt(1);
-	    st.close();
-	    c.close();
-		if (count > 0) {
+		Account a = get_account(name);
+		if (a!=null) {
 			System.out.println("Conta já existe!");
 		} 
 		else if (pwd1.equals(pwd2)){
-			Account a = new Account(name, AESencrp.encrypt(pwd1));
+			a = new Account(name, AESencrp.encrypt(pwd1));
 			save_acc(a);
 
 		} else { System.out.println("Passwords são diferentes!"); }
