@@ -32,14 +32,11 @@ public class Authenticator {
 
   public Account login(String name, String pwd) throws Exception {
     Account tmp = get_account(name);
-    if(tmp == null)
-      throw new UndefinedAccountException("Account doesnt exist!");
-    else if(tmp.locked())
+    if(tmp.locked())
       throw new LockedAccountException("Account is locked!");
     else if(!tmp.getPassword().equals(AESencrp.encrypt(pwd)))
       throw new AuthenticationErrorException("Wrong password!");
     else {
-
       tmp.logIn();
       save_acc(tmp);
       return tmp;
@@ -47,7 +44,11 @@ public class Authenticator {
   }
 
   public void logout (Account a) throws Exception {
-    if (a.logged() && !a.locked()) {
+    if(!a.logged())
+      throw new LoggedAccountException("Account is not logged in!");
+    else if(a.locked())
+      throw new LockedAccountException("Account is locked!");
+    else {
       a.logOut();
     }
     save_acc(a);
@@ -67,7 +68,16 @@ public class Authenticator {
 
   public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
     Account tmp = get_account(name);
-    if (tmp != null && tmp.logged() && !tmp.locked() && tmp.getPassword().equals(AESencrp.encrypt(pwd2))) {
+    if (!tmp.logged()) {
+      throw new LoggedAccountException("Account is not logged in!");
+    }
+    else if (tmp.locked()) {
+      throw new LockedAccountException("Account is locked!");
+    }
+    else if (!tmp.getPassword().equals(AESencrp.encrypt(pwd2))) {
+      throw new PasswordMismatchException("The passwords don't match!");
+    }
+    else {
       Connection c = getCon();
       PreparedStatement pstmt = c.prepareStatement("UPDATE users SET pwd=? where email=?");
       pstmt.setString(1, AESencrp.encrypt(pwd1));
@@ -93,32 +103,36 @@ public class Authenticator {
     }
     pstmt.close();
     c.close();
+    if(acc == null) throw new UndefinedAccountException("Account doesnt exist!");
     return acc;
   }
 
   public void delete_account(String name) throws Exception {
     Account a = get_account(name);
-    if (a!=null) {
-      a.lock();
-      save_acc(a);
-      Connection c = getCon();
-      PreparedStatement pstmt = c.prepareStatement("DELETE FROM users WHERE email=?");
-      pstmt.setString(1, a.getUsername());
-      pstmt.executeUpdate();
-      pstmt.close();
-      c.close();
-    }
+    a.lock();
+    save_acc(a);
+    Connection c = getCon();
+    PreparedStatement pstmt = c.prepareStatement("DELETE FROM users WHERE email=?");
+    pstmt.setString(1, a.getUsername());
+    pstmt.executeUpdate();
+    pstmt.close();
+    c.close();
   }
 
   public void create_account(String name, String pwd1, String pwd2) throws Exception {
-    Account a = get_account(name);
+    Account a = null;
+    try {
+      a = get_account(name);
+    } catch (UndefinedAccountException e) {}
     if (a!=null) {
-      System.out.println("Conta já existe!");
-    } 
-    else if (pwd1.equals(pwd2)){
+      throw new EmailInUseException("That email is already registred!");
+    }
+    else if (!pwd1.equals(pwd2)) {
+      throw new PasswordMismatchException("The passwords don't match!");
+    }
+    else {
       a = new Account(name, AESencrp.encrypt(pwd1));
       save_acc(a);
-
-    } else { System.out.println("Passwords são diferentes!"); }
+    }
   }
 }

@@ -45,17 +45,16 @@ public class EditServlet extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
-
     String pw = request.getParameter("password");
     String pw2 = request.getParameter("password2");
-
     try {
       String tmp = (String)session.getAttribute("user");
       auth.change_pwd(tmp, pw2, pw);
+      response.sendRedirect("/MyServlet/");
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/login");
     }
-    response.sendRedirect("/MyServlet/");
   }
 
 }

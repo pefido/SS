@@ -50,9 +50,9 @@ public class RegisterServlet extends HttpServlet {
     try {
       auth.create_account(email,pw,pw2);
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/register");
     }
-    response.sendRedirect("/MyServlet/");
   }
 
 }

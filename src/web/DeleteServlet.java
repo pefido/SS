@@ -33,11 +33,12 @@ public class DeleteServlet extends HttpServlet {
     try {
       String tmp = (String)session.getAttribute("user");
       auth.delete_account((auth.get_account(tmp).getUsername()));
+      session.invalidate();
+      response.sendRedirect("/MyServlet/");
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/login");
     }
-    session.invalidate();
-    response.sendRedirect("/MyServlet/");
   }
 
 }
