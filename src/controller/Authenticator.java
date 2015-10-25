@@ -70,6 +70,7 @@ public class Authenticator {
 	    c.close();
 	}
 	
+	//TODO:
 	public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
 		Account tmp = get_account(name);
 		if (tmp != null && !tmp.logged() && !tmp.locked()) {
@@ -96,6 +97,7 @@ public class Authenticator {
 		return acc;
 	}
 	
+	//TODO:
 	public void delete_account(String name) throws Exception {
 		Account a = get_account(name);
 		if (a!=null) {

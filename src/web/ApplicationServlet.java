@@ -52,7 +52,7 @@ public class ApplicationServlet extends HttpServlet {
     }
     else {
       template = new Template(this, "/templates/account.html");
-      template.assign("name", name);
+      template.assign("name", (String)session.getAttribute("user"));
       //userID = (String)session.getAttribute(userIDKey);
     }
     writer.write(template.out());
