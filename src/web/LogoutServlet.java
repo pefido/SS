@@ -44,7 +44,7 @@ public class LogoutServlet extends HttpServlet {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    //session.removeAttribute("user");
+    session.removeAttribute("user");
     session.invalidate();
     response.sendRedirect("/MyServlet/");
   }

@@ -1,6 +1,7 @@
 package web;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -11,17 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Util.Template;
+import controller.Authenticator;
 
 @WebServlet("/")
 public class ApplicationServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   /**
+   * @throws SQLException 
+   * @throws ClassNotFoundException 
    * @see HttpServlet#HttpServlet()
    */
-  public ApplicationServlet() {
+  public ApplicationServlet() throws ClassNotFoundException, SQLException {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -41,7 +44,7 @@ public class ApplicationServlet extends HttpServlet {
 
 
     boolean logged = false;
-    String name = "Campinhos";
+    //String name = "Campinhos";
     response.setContentType("text/html");
     PrintWriter writer = response.getWriter();
     Template template = null;
@@ -52,7 +55,8 @@ public class ApplicationServlet extends HttpServlet {
     }
     else {
       template = new Template(this, "/templates/account.html");
-      template.assign("name", name);
+      System.out.println("user" + (String)session.getAttribute("user"));
+      template.assign("name", (String)session.getAttribute("user"));
       //userID = (String)session.getAttribute(userIDKey);
     }
     writer.write(template.out());
