@@ -50,7 +50,6 @@ public class LoginServlet extends HttpServlet {
       HttpSession session = request.getSession();
       try{
         String cenas = auth.login(email, pw).getUsername();
-        System.out.println(cenas);
         session.setAttribute("user", cenas);
         response.sendRedirect("/MyServlet/");
       } catch(Exception e){

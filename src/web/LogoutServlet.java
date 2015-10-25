@@ -25,7 +25,6 @@ public class LogoutServlet extends HttpServlet {
   public LogoutServlet() throws ClassNotFoundException, SQLException {
     super();
     auth = new Authenticator();
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -40,7 +39,6 @@ public class LogoutServlet extends HttpServlet {
       auth.logout(auth.get_account(tmp));
       //System.out.println("cenas: " + (Account)session.getAttribute("user"));
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     session.removeAttribute("user");
