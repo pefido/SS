@@ -1,9 +1,7 @@
 package util;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
 import javax.crypto.*;
 import javax.crypto.spec.*;
-import java.util.Base64.*;
 
 public class AESencrp {
   private static final String ALGO = "AES";

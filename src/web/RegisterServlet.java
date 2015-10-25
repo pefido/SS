@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.Authenticator;
-import util.AESencrp;
 import util.Template;
 
 @WebServlet("/register")

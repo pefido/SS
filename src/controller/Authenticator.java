@@ -1,18 +1,10 @@
 package controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
 import exception.*;
 import model.Account;
 import util.AESencrp;

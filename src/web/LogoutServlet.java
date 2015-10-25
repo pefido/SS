@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Authenticator;
-import model.Account;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
