@@ -49,6 +49,7 @@ public class RegisterServlet extends HttpServlet {
 
     try {
       auth.create_account(email,pw,pw2);
+      response.sendRedirect("/MyServlet/");
     } catch (Exception e) {
       System.out.println(e.getMessage());
       response.sendRedirect("/MyServlet/register");

@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.omg.Messaging.SyncScopeHelper;
-
 import controller.Authenticator;
+import exception.AuthenticationErrorException;
+import model.Account;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
@@ -35,11 +35,14 @@ public class LogoutServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
     try {
-      String tmp = (String)session.getAttribute("user");
-      auth.logout(auth.get_account(tmp));
+      Account user = auth.login(request, response);
+      auth.logout(user);
       session.removeAttribute("user");
       session.invalidate();
       response.sendRedirect("/MyServlet/");
+    } catch (AuthenticationErrorException e1) {
+      System.out.println(e1.getMessage());
+      response.sendRedirect("/MyServlet/login");
     } catch (Exception e) {
       System.out.println(e.getMessage());
       response.sendRedirect("/MyServlet/login");
