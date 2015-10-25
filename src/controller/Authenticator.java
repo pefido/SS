@@ -36,29 +36,23 @@ public class Authenticator {
   private Connection getCon() throws ClassNotFoundException, SQLException {
     Class.forName("org.sqlite.JDBC");
     DriverManager.registerDriver(new org.sqlite.JDBC());
-    return DriverManager.getConnection("jdbc:sqlite:SS.db");
+    return DriverManager.getConnection("jdbc:sqlite:SSS.db");
   }
 
   public Account login(String name, String pwd) throws Exception {
     Account tmp = get_account(name);
     if(tmp == null)
       throw new UndefinedAccountException("Account doesnt exist!");
-    else if(tmp.logged())
-      throw new LoggedAccountException("Account is alredy logged somewhere else!");
     else if(tmp.locked())
       throw new LockedAccountException("Account is locked!");
-    else if(!tmp.getPassword().equals(AESencrp.decrypt(pwd)))
+    else if(!tmp.getPassword().equals(AESencrp.encrypt(pwd)))
       throw new AuthenticationErrorException("Wrong password!");
-    
-    if (tmp != null && !tmp.logged() && !tmp.locked()) {
+	else {
 
-      if (AESencrp.decrypt(tmp.getPassword()).equals(pwd)) {
-        tmp.logIn();
-        save_acc(tmp);
-        return tmp;
-      }
+			tmp.logIn();
+			save_acc(tmp);
+			return tmp;
     }
-    return null;
   }
 
   public void logout (Account a) throws Exception {

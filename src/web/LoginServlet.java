@@ -91,18 +91,18 @@ public class LoginServlet extends HttpServlet {
     try {
       //System.out.println("EPA "+auth.login(email,pw).getUsername());
       HttpSession session = request.getSession();
-      //try{
+      try{
       String cenas = auth.login(email, pw).getUsername();
       session.setAttribute("user", cenas);
-      //} catch(Exception e){
-      //  System.out.println(e.getMessage());
-      //  response.getWriter().append(e.getMessage());
-      //}
+      response.sendRedirect("/MyServlet/");
+      } catch(Exception e){
+          System.out.println(e.getMessage());
+          response.sendRedirect("/MyServlet/login");
+      }
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    response.sendRedirect("/MyServlet/");
   }
 
 }
