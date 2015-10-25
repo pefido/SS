@@ -31,13 +31,13 @@ public class ApplicationServlet extends HttpServlet {
 
     HttpSession session = request.getSession(false);
 
-    String title = "Welcome Back to my website";
-    Integer visitCount = new Integer(0);
-    String visitCountKey = new String("visitCount");
-    String userIDKey = new String("userID");
-    String userID = new String("ABCD");
+    //String title = "Welcome Back to my website";
+    //Integer visitCount = new Integer(0);
+    //String visitCountKey = new String("visitCount");
+    //String userIDKey = new String("userID");
+    //String userID = new String("ABCD");
 
-    System.out.println(title);
+    //System.out.println(title);
 
 
     boolean logged = false;
@@ -46,16 +46,14 @@ public class ApplicationServlet extends HttpServlet {
     PrintWriter writer = response.getWriter();
     Template template = null;
 
+    System.out.println("aqui: " + session);
     if (session == null) {
-      session = request.getSession();
       template = new Template(this, "/templates/index.html");
-      session.setAttribute(userIDKey, name);
-      userID = (String)session.getAttribute(userIDKey);
     }
     else {
       template = new Template(this, "/templates/account.html");
       template.assign("name", name);
-      userID = (String)session.getAttribute(userIDKey);
+      //userID = (String)session.getAttribute(userIDKey);
     }
     writer.write(template.out());
     writer.close();

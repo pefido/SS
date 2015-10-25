@@ -69,7 +69,7 @@ public class Authenticator {
 	    pstmt.close();
 	    c.close();
 	}
-
+	
 	public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
 		Account tmp = get_account(name);
 		if (tmp != null && !tmp.logged() && !tmp.locked()) {
@@ -124,5 +124,5 @@ public class Authenticator {
 
 		} else { System.out.println("Passwords são diferentes!"); }
 	}
-  
+
 }

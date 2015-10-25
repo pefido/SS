@@ -47,14 +47,13 @@ public class RegisterServlet extends HttpServlet {
     String email = request.getParameter("email");
     String pw = request.getParameter("password");
     String pw2 = request.getParameter("password2");
-    
+
     try {
-		auth.create_account(email,pw,pw2);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-    doGet(request, response);
+      auth.create_account(email,pw,pw2);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    response.sendRedirect("/MyServlet/");
   }
 
 }

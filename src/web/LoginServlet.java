@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controller.Authenticator;
 
@@ -85,18 +86,18 @@ public class LoginServlet extends HttpServlet {
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    // TODO Auto-generated method stub
-	System.out.println(request.getParameter("password"));
-	System.out.println(request.getParameter("email"));
     String email = request.getParameter("email");
     String pw = request.getParameter("password");
-
     try {
-		System.out.println("EPA "+auth.login(email,pw).getUsername());
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-    doGet(request, response);
+      //System.out.println("EPA "+auth.login(email,pw).getUsername());
+      HttpSession session = request.getSession();
+      String cenas = auth.login(email, pw).getUsername();
+      session.setAttribute("user", cenas);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    response.sendRedirect("/MyServlet/");
   }
 
 }
