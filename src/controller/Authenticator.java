@@ -19,19 +19,18 @@ import model.Account;
 
 public class Authenticator {
 
-  public Authenticator () throws SQLException, ClassNotFoundException {
-    Connection c = getCon();
-    String sqlCreate = 
-        "CREATE  TABLE IF NOT EXISTS users "
-            + "(EMAIL  TEXT PRIMARY KEY     NOT NULL,"
-            + " PWD    TEXT NOT NULL,"
-            + " LOCKED BOOLEAN NOT NULL,"
-            + " LOGGED BOOLEAN NOT NULL )";
-    Statement stmt = c.createStatement();
-    stmt.execute(sqlCreate);
-    stmt.close();
+public Authenticator () throws SQLException, ClassNotFoundException {
+	Connection c = getCon();
+	PreparedStatement pstmt = c.prepareStatement(
+	  "CREATE  TABLE IF NOT EXISTS users "
+    + "(EMAIL  TEXT PRIMARY KEY     NOT NULL,"
+    + " PWD    TEXT NOT NULL,"
+    + " LOCKED BOOLEAN NOT NULL,"
+	+ " LOGGED BOOLEAN NOT NULL )");
+	pstmt.executeUpdate();
+    pstmt.close();
     c.close();
-  }
+}
 
   private Connection getCon() throws ClassNotFoundException, SQLException {
     Class.forName("org.sqlite.JDBC");
@@ -61,67 +60,73 @@ public class Authenticator {
     }
     save_acc(a);
   }
-
-  private void save_acc(Account a) throws Exception {
-    Connection c = getCon();
-    PreparedStatement pstmt = c.prepareStatement("INSERT OR REPLACE into users values (?, ?, ?, ?)");
-    pstmt.setString(1, a.getUsername());
-    pstmt.setObject(2, a.getPassword());
-    pstmt.setObject(3, a.locked());
-    pstmt.setObject(4, a.logged());
-    pstmt.executeUpdate();
-    pstmt.close();
-    c.close();
-  }
-
-  public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
-    Account tmp = get_account(name);
-    if (tmp != null && !tmp.logged() && !tmp.locked()) {}
-
-
-  }
+  
+	private void save_acc(Account a) throws Exception {
+		Connection c = getCon();
+		PreparedStatement pstmt = c.prepareStatement("INSERT OR REPLACE into users values (?, ?, ?, ?)");
+		pstmt.setString(1, a.getUsername());
+		pstmt.setString(2, a.getPassword());
+		pstmt.setBoolean(3, a.locked());
+		pstmt.setBoolean(4, a.logged());
+		pstmt.executeUpdate();
+	    pstmt.close();
+	    c.close();
+	}
+	
+	public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
+		Account tmp = get_account(name);
+		if (tmp != null && tmp.logged() && !tmp.locked() && tmp.getPassword().equals(AESencrp.encrypt(pwd2))) {
+			Connection c = getCon();
+			PreparedStatement pstmt = c.prepareStatement("UPDATE users SET pwd=? where email=?");
+			pstmt.setString(1, AESencrp.encrypt(pwd1));
+			pstmt.setObject(2, tmp.getUsername());
+			pstmt.executeUpdate();
+		    pstmt.close();
+		    c.close();
+		}
+	}
 
   public Account get_account(String name) throws Exception {
-    Connection c = getCon();
-    Statement stmt = c.createStatement();
-    ResultSet tmp = stmt.executeQuery("select * from users where email='"+name+"'");
-    Account acc = null;
-    while(tmp.next()){
-      String username = tmp.getString(1);
-      String pass = tmp.getString(2);
-      boolean locked = tmp.getBoolean(3);
-      boolean logged = tmp.getBoolean(4);
-      acc = new Account(username,pass,locked,logged);
-    }
-    stmt.close();
-    c.close();
-    return acc;
-  }
+		Connection c = getCon();
+		PreparedStatement pstmt = c.prepareStatement("SELECT * FROM users WHERE email=?");
+		pstmt.setString(1, name);
+		ResultSet tmp = pstmt.executeQuery();
+		Account acc = null;
+	    while(tmp.next()){
+	      String username = tmp.getString(1);
+	      String pass = tmp.getString(2);
+	      boolean locked = tmp.getBoolean(3);
+	      boolean logged = tmp.getBoolean(4);
+	      acc = new Account(username,pass,locked,logged);
+	    }
+	    pstmt.close();
+	    c.close();
+		return acc;
+	}
 
-  public void delete_account(String name) throws Exception {
-    Account a = get_account(name);
+	public void delete_account(String name) throws Exception {
+		Account a = get_account(name);
+		if (a!=null) {
+			a.lock();
+			save_acc(a);
+			Connection c = getCon();
+			PreparedStatement pstmt = c.prepareStatement("DELETE FROM users WHERE email=?");
+			pstmt.setString(1, a.getUsername());
+			pstmt.executeUpdate();
+		    pstmt.close();
+		    c.close();
+		}
+	}
+	
+	public void create_account(String name, String pwd1, String pwd2) throws Exception {
+		Account a = get_account(name);
+		if (a!=null) {
+			System.out.println("Conta já existe!");
+		} 
+		else if (pwd1.equals(pwd2)){
+			a = new Account(name, AESencrp.encrypt(pwd1));
+			save_acc(a);
 
-
-  }
-
-  public void create_account(String name, String pwd1, String pwd2) throws Exception {
-    Connection c = getCon();
-    //Confirmar se a conta já existe
-    String getsql = "select count(*) from users where email='"+name+"'";
-    Statement st = c.createStatement();
-    ResultSet tmp = st.executeQuery(getsql);
-    tmp.next();
-    int count = tmp.getInt(1);
-    st.close();
-    c.close();
-    if (count > 0) {
-      System.out.println("Conta já existe!");
-    } 
-    else if (pwd1.equals(pwd2)){
-      Account a = new Account(name, AESencrp.encrypt(pwd1));
-      save_acc(a);
-
-    } else { System.out.println("Passwords são diferentes!"); }
-  }
-
+		} else { System.out.println("Passwords são diferentes!"); }
+	}
 }
