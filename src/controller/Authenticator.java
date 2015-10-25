@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import exception.*;
 import model.Account;
 import util.AESencrp;
@@ -134,5 +139,18 @@ public class Authenticator {
       a = new Account(name, AESencrp.encrypt(pwd1));
       save_acc(a);
     }
+  }
+  
+  public Account login(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    HttpSession session = req.getSession(false);
+    String email = (String)session.getAttribute("user");
+    Account a = null;
+    try {
+      a = get_account(email);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      throw new AuthenticationErrorException("Not authenticated!");
+    }
+    return login(a.getUsername(),a.getPassword());
   }
 }

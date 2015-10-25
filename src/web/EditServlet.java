@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Authenticator;
+import exception.AuthenticationErrorException;
+import model.Account;
 import util.Template;
 
 @WebServlet("/edit")
@@ -45,6 +47,14 @@ public class EditServlet extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
+    try {
+      Account user = auth.login(request, response);
+    } catch (AuthenticationErrorException e1) {
+      System.out.println(e1.getMessage());
+      response.sendRedirect("/MyServlet/login");
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
     String pw = request.getParameter("password");
     String pw2 = request.getParameter("password2");
     try {
