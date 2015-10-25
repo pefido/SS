@@ -1,3 +1,4 @@
+package util;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.*;
@@ -31,6 +32,7 @@ public class AESencrp {
     return key;
   }
 
+  /*
   public static void main(String[] args) throws Exception {
 
     String password = "salt"+"my_passwd_$";
@@ -43,7 +45,7 @@ public class AESencrp {
     System.out.println("Encrypted Text : " + passwordEnc1);
     System.out.println("Decrypted Text : " + passwordDec);
   }
-
+  */
 
 }
 

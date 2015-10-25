@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Util.Template;
 import controller.Authenticator;
+import util.Template;
 
 @WebServlet("/edit")
 public class EditServlet extends HttpServlet {
