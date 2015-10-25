@@ -50,7 +50,6 @@ public class EditServlet extends HttpServlet {
     try {
       Account user = auth.login(request, response);
     } catch (AuthenticationErrorException e1) {
-      System.out.println(e1.getMessage());
       response.sendRedirect("/MyServlet/login");
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -63,7 +62,7 @@ public class EditServlet extends HttpServlet {
       response.sendRedirect("/MyServlet/");
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      response.sendRedirect("/MyServlet/login");
+      response.sendRedirect("/MyServlet/edit");
     }
   }
 

@@ -151,6 +151,6 @@ public class Authenticator {
       System.out.println(e.getMessage());
       throw new AuthenticationErrorException("Not authenticated!");
     }
-    return login(a.getUsername(),a.getPassword());
+    return login(a.getUsername(),AESencrp.decrypt(a.getPassword()));
   }
 }
