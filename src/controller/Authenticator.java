@@ -41,8 +41,7 @@ public class Authenticator {
 	public Account login(String name, String pwd) throws Exception {
 		Account tmp = get_account(name);
 		if (tmp != null && !tmp.logged() && !tmp.locked()) {
-			System.out.println(tmp.getPassword().equals(AESencrp.encrypt(pwd)));
-			if (AESencrp.decrypt(tmp.getPassword()).equals(pwd)) {
+			if (tmp.getPassword().equals(AESencrp.encrypt(pwd))) {
 				tmp.logIn();
 				save_acc(tmp);
 				return tmp;
@@ -73,19 +72,23 @@ public class Authenticator {
 	//TODO:
 	public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
 		Account tmp = get_account(name);
-		if (tmp != null && !tmp.logged() && !tmp.locked()) {
-			
+		if (tmp != null && tmp.logged() && !tmp.locked() && tmp.getPassword().equals(AESencrp.encrypt(pwd2))) {
+			Connection c = getCon();
+			PreparedStatement pstmt = c.prepareStatement("UPDATE users SET pwd=? where email=?");
+			pstmt.setString(1, AESencrp.encrypt(pwd1));
+			pstmt.setObject(2, tmp.getUsername());
+			pstmt.executeUpdate();
+		    pstmt.close();
+		    c.close();
 		}
 	}
 	
 	public Account get_account(String name) throws Exception {
 		Connection c = getCon();
 		Statement stmt = c.createStatement();
-		System.out.println(name);
 		ResultSet tmp = stmt.executeQuery("select * from users where email='"+name+"'");
 		Account acc = null;
 	    while(tmp.next()){
-	      System.out.println("sim");
 	      String username = tmp.getString(1);
 	      String pass = tmp.getString(2);
 	      boolean locked = tmp.getBoolean(3);
@@ -97,13 +100,17 @@ public class Authenticator {
 		return acc;
 	}
 	
-	//TODO:
 	public void delete_account(String name) throws Exception {
 		Account a = get_account(name);
 		if (a!=null) {
 			a.lock();
 			save_acc(a);
-			//remover conta
+			Connection c = getCon();
+			PreparedStatement pstmt = c.prepareStatement("DELETE FROM users WHERE email=?");
+			pstmt.setString(1, a.getUsername());
+			pstmt.executeUpdate();
+		    pstmt.close();
+		    c.close();
 		}
 	}
 	

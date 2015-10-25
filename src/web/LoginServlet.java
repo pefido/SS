@@ -29,7 +29,6 @@ public class LoginServlet extends HttpServlet {
   public LoginServlet() throws ClassNotFoundException, SQLException {
     super();
     auth = new Authenticator();
-    // TODO Auto-generated constructor stub
   }
 
   /**
