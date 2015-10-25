@@ -51,13 +51,13 @@ public class LoginServlet extends HttpServlet {
     try {
       HttpSession session = request.getSession();
       try{
-      String cenas = auth.login(email, pw).getUsername();
-      System.out.println(cenas);
-      session.setAttribute("user", cenas);
-      response.sendRedirect("/MyServlet/");
+        String cenas = auth.login(email, pw).getUsername();
+        System.out.println(cenas);
+        session.setAttribute("user", cenas);
+        response.sendRedirect("/MyServlet/");
       } catch(Exception e){
-          System.out.println(e.getMessage());
-          response.sendRedirect("/MyServlet/login");
+        System.out.println(e.getMessage());
+        response.sendRedirect("/MyServlet/login");
       }
     } catch (Exception e) {
       e.printStackTrace();

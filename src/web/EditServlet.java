@@ -34,21 +34,21 @@ public class EditServlet extends HttpServlet {
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/html");
-	PrintWriter writer = response.getWriter();
-	Template template = new Template(this, "/templates/edit.html");
-	writer.write(template.out());
-	writer.close();
+    PrintWriter writer = response.getWriter();
+    Template template = new Template(this, "/templates/edit.html");
+    writer.write(template.out());
+    writer.close();
   }
 
   /**
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession session = request.getSession(false);
-	
-	String pw = request.getParameter("password");
+    HttpSession session = request.getSession(false);
+
+    String pw = request.getParameter("password");
     String pw2 = request.getParameter("password2");
-   
+
     try {
       String tmp = (String)session.getAttribute("user");
       auth.change_pwd(tmp, pw2, pw);

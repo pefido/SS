@@ -15,11 +15,11 @@ public class Account implements Serializable {
     logged = false;
     locked = false;
   }
-  
+
   public Account(String accountName, String password, boolean locked, boolean logged) {
-	this.accountName = accountName;
-	this.password = password;
-	this.logged = logged;
+    this.accountName = accountName;
+    this.password = password;
+    this.logged = logged;
     this.locked = locked;
   }
 

@@ -17,7 +17,7 @@ import model.Account;
 public class LogoutServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private Authenticator auth;
-  
+
   /**
    * @throws SQLException 
    * @throws ClassNotFoundException 

@@ -8,7 +8,7 @@ import java.util.Base64.*;
 public class AESencrp {
   private static final String ALGO = "AES";
   private static final byte[] keyValue =
-    new byte[] { 'T', 'h', 'e', 'B', 'e', 's', '7', 'S', '$', 'c', 'r','e', 't', 'K', 'e', 'y' };
+      new byte[] { 'T', 'h', 'e', 'B', 'e', 's', '7', 'S', '$', 'c', 'r','e', 't', 'K', 'e', 'y' };
 
   public static String encrypt(String Data) throws Exception {
     Key key = generateKey();
@@ -45,7 +45,7 @@ public class AESencrp {
     System.out.println("Encrypted Text : " + passwordEnc1);
     System.out.println("Decrypted Text : " + passwordDec);
   }
-  */
+   */
 
 }
 
