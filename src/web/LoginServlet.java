@@ -94,7 +94,6 @@ public class LoginServlet extends HttpServlet {
     try {
 		System.out.println("EPA "+auth.login(email,pw).getUsername());
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
     doGet(request, response);

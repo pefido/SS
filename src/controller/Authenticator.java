@@ -72,9 +72,9 @@ public class Authenticator {
 
 	public void change_pwd(String name, String pwd1, String pwd2) throws Exception {
 		Account tmp = get_account(name);
-		if (tmp != null && !tmp.logged() && !tmp.locked()) {}
-		
-		
+		if (tmp != null && !tmp.logged() && !tmp.locked()) {
+			
+		}
 	}
 	
 	public Account get_account(String name) throws Exception {
@@ -98,8 +98,11 @@ public class Authenticator {
 	
 	public void delete_account(String name) throws Exception {
 		Account a = get_account(name);
-		
-		
+		if (a!=null) {
+			a.lock();
+			save_acc(a);
+			//remover conta
+		}
 	}
 	
 	public void create_account(String name, String pwd1, String pwd2) throws Exception {
