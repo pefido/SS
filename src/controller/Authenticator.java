@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import Util.AESencrp;
+import exception.*;
 import model.Account;
 
 public class Authenticator {
@@ -40,6 +41,15 @@ public class Authenticator {
 
   public Account login(String name, String pwd) throws Exception {
     Account tmp = get_account(name);
+    if(tmp == null)
+      throw new UndefinedAccountException("Account doesnt exist!");
+    else if(tmp.logged())
+      throw new LoggedAccountException("Account is alredy logged somewhere else!");
+    else if(tmp.locked())
+      throw new LockedAccountException("Account is locked!");
+    else if(!tmp.getPassword().equals(AESencrp.decrypt(pwd)))
+      throw new AuthenticationErrorException("Wrong password!");
+    
     if (tmp != null && !tmp.logged() && !tmp.locked()) {
 
       if (AESencrp.decrypt(tmp.getPassword()).equals(pwd)) {
