@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class Account implements Serializable {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private String accountName;
   private String password;
   private boolean logged;
@@ -15,11 +19,11 @@ public class Account implements Serializable {
     logged = false;
     locked = false;
   }
-  
+
   public Account(String accountName, String password, boolean locked, boolean logged) {
-	this.accountName = accountName;
-	this.password = password;
-	this.logged = logged;
+    this.accountName = accountName;
+    this.password = password;
+    this.logged = logged;
     this.locked = locked;
   }
 

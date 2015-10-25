@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Util.Template;
 import controller.Authenticator;
+import util.Template;
 
 @WebServlet("/edit")
 public class EditServlet extends HttpServlet {
@@ -34,28 +34,27 @@ public class EditServlet extends HttpServlet {
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/html");
-	PrintWriter writer = response.getWriter();
-	Template template = new Template(this, "/templates/edit.html");
-	writer.write(template.out());
-	writer.close();
+    PrintWriter writer = response.getWriter();
+    Template template = new Template(this, "/templates/edit.html");
+    writer.write(template.out());
+    writer.close();
   }
 
   /**
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession session = request.getSession(false);
-	
-	String pw = request.getParameter("password");
+    HttpSession session = request.getSession(false);
+    String pw = request.getParameter("password");
     String pw2 = request.getParameter("password2");
-   
     try {
       String tmp = (String)session.getAttribute("user");
       auth.change_pwd(tmp, pw2, pw);
+      response.sendRedirect("/MyServlet/");
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/login");
     }
-    response.sendRedirect("/MyServlet/");
   }
 
 }

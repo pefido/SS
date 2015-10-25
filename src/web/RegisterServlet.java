@@ -10,9 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Util.AESencrp;
-import Util.Template;
 import controller.Authenticator;
+import util.Template;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
@@ -51,9 +50,9 @@ public class RegisterServlet extends HttpServlet {
     try {
       auth.create_account(email,pw,pw2);
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/register");
     }
-    response.sendRedirect("/MyServlet/");
   }
 
 }

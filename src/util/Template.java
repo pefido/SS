@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 import java.io.*;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class Template {
   }
 
   public void assign(String string, String name) {
-	if (name==null) {name = "Null";}
+    if (name==null) {name = "Null";}
     variables.put(string, name);
   }
 

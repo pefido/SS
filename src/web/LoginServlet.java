@@ -1,7 +1,5 @@
 package web;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Util.Template;
 import controller.Authenticator;
+import util.Template;
 
 import java.sql.*;
 
@@ -50,13 +48,18 @@ public class LoginServlet extends HttpServlet {
     String pw = request.getParameter("password");
     try {
       HttpSession session = request.getSession();
-      String cenas = auth.login(email, pw).getUsername();
-      System.out.println(cenas);
-      session.setAttribute("user", cenas);
+      try{
+        String cenas = auth.login(email, pw).getUsername();
+        session.setAttribute("user", cenas);
+        response.sendRedirect("/MyServlet/");
+      } catch(Exception e){
+        System.out.println(e.getMessage());
+        response.sendRedirect("/MyServlet/login");
+      }
     } catch (Exception e) {
       e.printStackTrace();
+      System.out.println(e.getMessage());
     }
-    response.sendRedirect("/MyServlet/");
   }
 
 }
