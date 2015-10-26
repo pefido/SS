@@ -153,4 +153,11 @@ public class Authenticator {
     }
     return login(a.getUsername(),AESencrp.decrypt(a.getPassword()));
   }
+  
+  public boolean isAdmin (Account account){
+    boolean isAdmin = false;
+    if(account.getUsername().equals("root"))
+      isAdmin = true;
+    return isAdmin;
+  }
 }
