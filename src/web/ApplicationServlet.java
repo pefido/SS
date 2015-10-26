@@ -9,19 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controller.Authenticator;
 import util.Template;
 
 @WebServlet("/")
 public class ApplicationServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
+  Authenticator auth;
 
   /**
-   * @throws SQLException 
-   * @throws ClassNotFoundException 
+   * @throws Exception 
    * @see HttpServlet#HttpServlet()
    */
-  public ApplicationServlet() throws ClassNotFoundException, SQLException {
+  public ApplicationServlet() throws Exception {
     super();
+    auth = new Authenticator();
   }
 
   /**
@@ -41,6 +43,17 @@ public class ApplicationServlet extends HttpServlet {
     }
     else {
       template = new Template(this, "/templates/account.html");
+      try {
+        if (auth.isAdmin(auth.get_account((String)session.getAttribute("user")))) {
+          System.out.println("yup");
+          template.assign("admin.register","<a class='btn btn-default' href='register'>Register</a>"); 
+          template.assign("admin.delete","<form method='post' action='delete'><button type='submit' class='btn btn-default'>Delete Account</button></form>"); 
+        }
+        else {
+          template.assign("admin.register","");
+          template.assign("admin.delete","");
+        }
+      } catch (Exception e) {e.printStackTrace();}
       template.assign("name", (String)session.getAttribute("user"));
     }
     writer.write(template.out());
