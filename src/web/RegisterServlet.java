@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Authenticator;
+import exception.AuthenticationErrorException;
 import model.Account;
 import util.Template;
 
@@ -28,40 +29,36 @@ public class RegisterServlet extends HttpServlet {
   }
 
   /**
+   * @throws IOException 
    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    */
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    try {
-      HttpSession session = request.getSession();
-      if(!session.isNew()){
-        Account user = auth.login(request, response);
-        if(auth.isAdmin(user)) {
-          response.setContentType("text/html");
-          PrintWriter writer = response.getWriter();
-          Template template = new Template(this, "/templates/register.html");
-          writer.write(template.out());
-          writer.close();
-        }
-        else{
-          response.sendRedirect("/MyServlet/");
-        }
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    try{
+      Account user = auth.login(request, response);
+      if(auth.isAdmin(user)) {
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();
+        Template template = new Template(this, "/templates/register.html");
+        writer.write(template.out());
+        writer.close();
       }
-      else {
-        session.invalidate();
+      else{
         response.sendRedirect("/MyServlet/");
       }
-    } catch (Exception e1) {e1.printStackTrace();}
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      response.sendRedirect("/MyServlet/");
+    }
   }
 
   /**
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    try {
-      HttpSession session = request.getSession();
-      if(!session.isNew()){
-        Account user = auth.login(request, response);
-        if(auth.isAdmin(user)) {
+    try{
+      Account user = auth.login(request, response);
+      if(auth.isAdmin(user)) {
           String email = request.getParameter("email");
           String pw = request.getParameter("password");
           String pw2 = request.getParameter("password2");
@@ -73,16 +70,15 @@ public class RegisterServlet extends HttpServlet {
             System.out.println(e.getMessage());
             response.sendRedirect("/MyServlet/register");
           }
-        }
-        else{
-          response.sendRedirect("/MyServlet/");
-        }
       }
-      else {
-        session.invalidate();
+      else{
         response.sendRedirect("/MyServlet/");
       }
-    } catch (Exception e1) {e1.printStackTrace();}
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      response.sendRedirect("/MyServlet/");
+    }
   }
 
 }
