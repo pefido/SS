@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.omg.Messaging.SyncScopeHelper;
+
 import controller.Authenticator;
 import util.Template;
 
@@ -44,19 +46,22 @@ public class ApplicationServlet extends HttpServlet {
     else {
       template = new Template(this, "/templates/account.html");
       try {
+        template.assign("name", (String)session.getAttribute("user"));
         if (auth.isAdmin(auth.get_account((String)session.getAttribute("user")))) {
-          System.out.println("yup");
           template.assign("admin.stuff", "<h3>Admin Stuff</h3>");
           template.assign("admin.register","<a class='btn btn-default' href='register'>Register Account</a>"); 
-          template.assign("admin.delete","<a class='btn btn-default' href='delete'>Delete Account</a>"); 
+          template.assign("admin.delete","<a class='btn btn-default' href='delete'>Delete Account</a>");
         }
         else {
           template.assign("admin.stuff","");
           template.assign("admin.register","");
           template.assign("admin.delete","");
         }
-      } catch (Exception e) {e.printStackTrace();}
-      template.assign("name", (String)session.getAttribute("user"));
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+        session.invalidate();
+        response.sendRedirect("/MyServlet/login");
+      }
     }
     writer.write(template.out());
     writer.close();

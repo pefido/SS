@@ -33,11 +33,24 @@ public class DeleteServlet extends HttpServlet {
    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setContentType("text/html");
-    PrintWriter writer = response.getWriter();
-    Template template = new Template(this, "/templates/delete.html");
-    writer.write(template.out());
-    writer.close();
+    try {
+      Account user = auth.login(request, response);
+      if (auth.isAdmin(user)) {
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();
+        Template template = new Template(this, "/templates/delete.html");
+        writer.write(template.out());
+        writer.close();
+      }
+      else {
+        response.sendRedirect("/MyServlet"); 
+      }
+    } catch (AuthenticationErrorException e1) {
+      System.out.println(e1.getMessage());
+      response.sendRedirect("/MyServlet/login");
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   /**
@@ -45,22 +58,25 @@ public class DeleteServlet extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
+    String email = request.getParameter("email");
     try {
       Account user = auth.login(request, response);
+      if (auth.isAdmin(user)) {
+        try {
+          auth.delete_account(email);
+          response.sendRedirect("/MyServlet/");
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+      }
+      else {
+        response.sendRedirect("/MyServlet"); 
+      }
     } catch (AuthenticationErrorException e1) {
       System.out.println(e1.getMessage());
       response.sendRedirect("/MyServlet/login");
     } catch (Exception e) {
       System.out.println(e.getMessage());
-    }
-    try {
-      String tmp = (String)session.getAttribute("user");
-      auth.delete_account((auth.get_account(tmp).getUsername()));
-      session.invalidate();
-      response.sendRedirect("/MyServlet/");
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      response.sendRedirect("/MyServlet/login");
     }
   }
 
