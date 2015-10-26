@@ -1,6 +1,8 @@
 package web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import controller.Authenticator;
 import exception.AuthenticationErrorException;
 import model.Account;
+import util.Template;
 
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
@@ -24,6 +27,17 @@ public class DeleteServlet extends HttpServlet {
   public DeleteServlet() throws Exception  {
     super();
     auth = new Authenticator();
+  }
+  
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+   */
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType("text/html");
+    PrintWriter writer = response.getWriter();
+    Template template = new Template(this, "/templates/delete.html");
+    writer.write(template.out());
+    writer.close();
   }
 
   /**

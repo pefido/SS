@@ -46,10 +46,12 @@ public class ApplicationServlet extends HttpServlet {
       try {
         if (auth.isAdmin(auth.get_account((String)session.getAttribute("user")))) {
           System.out.println("yup");
-          template.assign("admin.register","<a class='btn btn-default' href='register'>Register</a>"); 
-          template.assign("admin.delete","<form method='post' action='delete'><button type='submit' class='btn btn-default'>Delete Account</button></form>"); 
+          template.assign("admin.stuff", "<h3>Admin Stuff</h3>");
+          template.assign("admin.register","<a class='btn btn-default' href='register'>Register Account</a>"); 
+          template.assign("admin.delete","<a class='btn btn-default' href='delete'>Delete Account</a>"); 
         }
         else {
+          template.assign("admin.stuff","");
           template.assign("admin.register","");
           template.assign("admin.delete","");
         }
