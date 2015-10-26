@@ -151,6 +151,7 @@ public class Authenticator {
   
   public Account login(HttpServletRequest req, HttpServletResponse resp) throws Exception {
     HttpSession session = req.getSession(false);
+    System.out.println("session: " + (String)session.getAttribute("user"));
     String email = (String)session.getAttribute("user");
     Account a = null;
     try {
