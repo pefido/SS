@@ -40,7 +40,7 @@ public class Authenticator {
   private Connection getCon() throws ClassNotFoundException, SQLException {
     Class.forName("org.sqlite.JDBC");
     DriverManager.registerDriver(new org.sqlite.JDBC());
-    return DriverManager.getConnection("jdbc:sqlite:SSS.db");
+    return DriverManager.getConnection("jdbc:sqlite:SSfim.db");
   }
 
   public Account login(String name, String pwd) throws Exception {
