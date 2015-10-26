@@ -13,18 +13,15 @@ import javax.servlet.http.HttpSession;
 import controller.Authenticator;
 import util.Template;
 
-import java.sql.*;
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private Authenticator auth;
   /**
-   * @throws SQLException 
-   * @throws ClassNotFoundException 
+   * @throws Exception 
    * @see HttpServlet#HttpServlet()
    */
-  public LoginServlet() throws ClassNotFoundException, SQLException {
+  public LoginServlet() throws Exception {
     super();
     auth = new Authenticator();
   }

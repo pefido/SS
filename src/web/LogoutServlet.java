@@ -1,8 +1,6 @@
 package web;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,11 +18,10 @@ public class LogoutServlet extends HttpServlet {
   private Authenticator auth;
 
   /**
-   * @throws SQLException 
-   * @throws ClassNotFoundException 
+   * @throws Exception 
    * @see HttpServlet#HttpServlet()
    */
-  public LogoutServlet() throws ClassNotFoundException, SQLException {
+  public LogoutServlet() throws Exception {
     super();
     auth = new Authenticator();
   }

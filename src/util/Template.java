@@ -25,6 +25,7 @@ public class Template {
     String res = str;
     for (Map.Entry<String, String> entry : variables.entrySet()) {
       res = str.replaceAll("\\{\\{"+entry.getKey()+"}}", entry.getValue());
+      if (!res.equals(str)) break;
     }
     return res;
   }
