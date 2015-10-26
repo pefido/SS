@@ -2,8 +2,6 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,11 +20,10 @@ public class EditServlet extends HttpServlet {
   Authenticator auth;
 
   /**
-   * @throws SQLException 
-   * @throws ClassNotFoundException 
+   * @throws Exception 
    * @see HttpServlet#HttpServlet()
    */
-  public EditServlet() throws ClassNotFoundException, SQLException {
+  public EditServlet() throws Exception {
     super();
     auth = new Authenticator();
   }

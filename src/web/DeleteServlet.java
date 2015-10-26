@@ -1,8 +1,6 @@
 package web;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,9 +18,10 @@ public class DeleteServlet extends HttpServlet {
   Authenticator auth;
 
   /**
+   * @throws Exception 
    * @see HttpServlet#HttpServlet()
    */
-  public DeleteServlet() throws ClassNotFoundException, SQLException  {
+  public DeleteServlet() throws Exception  {
     super();
     auth = new Authenticator();
   }

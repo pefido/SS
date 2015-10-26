@@ -16,7 +16,7 @@ import util.AESencrp;
 
 public class Authenticator {
 
-  public Authenticator () throws SQLException, ClassNotFoundException {
+  public Authenticator () throws Exception {
     Connection c = getCon();
     PreparedStatement pstmt = c.prepareStatement(
         "CREATE  TABLE IF NOT EXISTS users "
@@ -26,6 +26,14 @@ public class Authenticator {
             + " LOGGED BOOLEAN NOT NULL )");
     pstmt.executeUpdate();
     pstmt.close();
+    pstmt = c.prepareStatement("INSERT OR REPLACE into users values (?, ?, ?, ?)");
+    pstmt.setString(1, "root");
+    pstmt.setString(2, AESencrp.encrypt("toor"));
+    pstmt.setBoolean(3, false);
+    pstmt.setBoolean(4, false);
+    pstmt.executeUpdate();
+    pstmt.close();
+    c.close();
     c.close();
   }
 
