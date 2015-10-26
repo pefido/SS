@@ -50,6 +50,7 @@ public class DeleteServlet extends HttpServlet {
       response.sendRedirect("/MyServlet/login");
     } catch (Exception e) {
       System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/");
     }
   }
 
@@ -76,7 +77,9 @@ public class DeleteServlet extends HttpServlet {
       response.sendRedirect("/MyServlet/login");
     } catch (Exception e) {
       System.out.println(e.getMessage());
+      response.sendRedirect("/MyServlet/");
     }
+    
   }
 
 }
