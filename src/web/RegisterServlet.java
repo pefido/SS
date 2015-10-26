@@ -47,7 +47,7 @@ public class RegisterServlet extends HttpServlet {
       }
     }
     catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
       response.sendRedirect("/MyServlet/");
     }
   }
@@ -76,7 +76,7 @@ public class RegisterServlet extends HttpServlet {
       }
     }
     catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
       response.sendRedirect("/MyServlet/");
     }
   }
